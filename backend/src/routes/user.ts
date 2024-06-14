@@ -1,11 +1,8 @@
 import { Hono } from "hono";
-import { sign } from "hono/jwt";
-import { z } from "zod";
+import { sign, verify } from "hono/jwt";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { signinInput, signupInput } from "@shantanu.kau/medium";
-
-
 
 const user = new Hono<{
     Bindings: {
@@ -80,12 +77,36 @@ user.post("/signin", async (c) => {
             return c.json({ message: "invalid password" }, 401);
         }
 
-        const token = sign({ id: user.id }, c.env.JWT_SECRET);
-
+        const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+        
         return c.json({ token });
     } catch (error) {
         return c.json({ message: "internal server error" }, 500);
     }
 });
+
+user.get('/me', async (c) => {
+    //TODO: return the name of the user with the id
+    
+    try {
+        const tokenString = c.req.header("Authorization");
+        if (!tokenString) {
+            return c.json({ message: "Unauthorized" }, 401);
+        }
+
+        const token = tokenString.split(" ")[1];
+
+        const payload = await verify(token, c.env.JWT_SECRET);
+
+        if (!payload) {
+            return c.json({ message: "unauthorized" }, 401);
+        }
+
+        return c.json({ id: payload.id });
+    } catch (error) {
+        return c.json({ message: "Unauthorized" }, 401);
+    }
+})
+
 
 export default user;
