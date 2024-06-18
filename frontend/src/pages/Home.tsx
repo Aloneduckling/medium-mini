@@ -1,7 +1,7 @@
-import useFetch from "../hooks/useFetch.ts"
+import useFetch from "./hooks/useFetch.ts"
 
 import { Player } from '@lottiefiles/react-lottie-player'
-import loading from '../assets/postLoading.json'
+import loading from './assets/postLoading.json'
 import DisplayError from "@/components/DisplayError.tsx";
 
 type Blog = {
@@ -18,7 +18,7 @@ const Home = () => {
         method: 'get',
         url: `${import.meta.env.VITE_BACKEND_BASE_URL}/blog/bulk`,
         headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem('token') || '')}`
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('token') ?? '')}`
         }
     });
 

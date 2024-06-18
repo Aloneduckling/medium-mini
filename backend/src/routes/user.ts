@@ -86,9 +86,13 @@ user.post("/signin", async (c) => {
 });
 
 user.get('/me', async (c) => {
-    //TODO: return the name of the user with the id
     
     try {
+
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL,
+        }).$extends(withAccelerate());
+
         const tokenString = c.req.header("Authorization");
         if (!tokenString) {
             return c.json({ message: "Unauthorized" }, 401);
@@ -102,7 +106,14 @@ user.get('/me', async (c) => {
             return c.json({ message: "unauthorized" }, 401);
         }
 
-        return c.json({ id: payload.id });
+        const user  = await prisma.user.findFirst({
+            where: {
+                id: payload.id
+            }
+        });
+        
+
+        return c.json({ id: payload.id, name: user?.name });
     } catch (error) {
         return c.json({ message: "Unauthorized" }, 401);
     }

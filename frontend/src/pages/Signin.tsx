@@ -38,7 +38,7 @@ const Signin = () => {
         url: `${import.meta.env.VITE_BACKEND_BASE_URL}/user/signin`,
         data: parsedData,
       });
-      console.log(res);
+      
       const token = res.data.token;
       
       localStorage.setItem('token', JSON.stringify(token));
