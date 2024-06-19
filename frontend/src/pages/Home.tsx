@@ -1,10 +1,11 @@
-import useFetch from "./hooks/useFetch.ts"
+import useFetch from "../hooks/useFetch"
 
 import { Player } from '@lottiefiles/react-lottie-player'
-import loading from './assets/postLoading.json'
+import loading from '../assets/postLoading.json'
 import DisplayError from "@/components/DisplayError.tsx";
+import BlogList from "./Blog/BlogList";
 
-type Blog = {
+export type TBlog = {
     id: string;
     title: string;
     content: string;
@@ -14,7 +15,7 @@ type Blog = {
 
 const Home = () => {
 
-    const [isLoading, data, error] = useFetch<Blog[]>({
+    const [isLoading, data, error] = useFetch<TBlog[]>({
         method: 'get',
         url: `${import.meta.env.VITE_BACKEND_BASE_URL}/blog/bulk`,
         headers: {
@@ -39,7 +40,10 @@ const Home = () => {
     }
     console.log(data);
     return (
-        <div>loaded</div>
+        <div className="flex flex-col justify-between  mt-10 p-4">
+            <h2 className="text-center font-bold text-3xl">All Blogs</h2>
+            <BlogList blogs={data}/>
+        </div>
     )
 }
 
