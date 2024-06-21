@@ -71,7 +71,7 @@ blog.put("/:id", async (c) => {
             }
         });
 
-        return c.json({}, 204);
+        return c.json({message: "blog updated"}, 204);
     } catch (error) {
         return c.json({ message: "internal server error" }, 500)
     }
@@ -92,7 +92,6 @@ blog.get("/bulk", async (c) => {
     }
 });
 
-//TODO: Blog should return the name of the author from the backend: check this
 blog.get("/:id", async(c) => {
     try {
         const prisma = new PrismaClient({
@@ -101,7 +100,7 @@ blog.get("/:id", async(c) => {
 
         const blogId = c.req.param('id');
         
-        const blog = await prisma.post.findFirst({
+        const foundBlog = await prisma.post.findFirst({
             where: {id: blogId},
             include: {
                 author: {
@@ -112,11 +111,11 @@ blog.get("/:id", async(c) => {
             }
         });
 
-        if(!blog){
+        if(!foundBlog){
             return c.json({ message: "blog not found" }, 404);
         }
 
-        return c.json(blog);
+        return c.json(foundBlog);
 
 
     } catch (error) {

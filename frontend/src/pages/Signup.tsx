@@ -52,7 +52,7 @@ const Signup = () => {
       navigate('/');
 
     } catch (error) {
-      let message;
+      let message = error;
       if(isAxiosError(error)){
         message = error.response?.data.message ?? error;
       }

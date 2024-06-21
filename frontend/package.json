@@ -17,7 +17,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toggle": "^1.0.3",
-    "@shantanu.kau/medium": "^1.0.0",
+    "@shantanu.kau/medium": "^1.0.2",
     "@tailwindcss/typography": "^0.5.13",
     "@tiptap/extension-color": "^2.4.0",
     "@tiptap/extension-text-style": "^2.4.0",
