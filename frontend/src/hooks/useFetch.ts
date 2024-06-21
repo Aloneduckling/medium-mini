@@ -4,7 +4,6 @@ import axios, { AxiosRequestConfig} from 'axios';
 
 
 const useFetch = <T>( config: AxiosRequestConfig, loadOnStart : boolean = true): [boolean, T | undefined , string, () => void] => {
-
     const [data, setData] = useState<T>();
     const [error, setError] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -21,7 +20,6 @@ const useFetch = <T>( config: AxiosRequestConfig, loadOnStart : boolean = true):
             setIsLoading(false);
             
         } catch (err) {
-            console.log(err);
             if(axios.isAxiosError(err)){
                 setError(err.response?.data?.message);
             }else if(err instanceof Error){

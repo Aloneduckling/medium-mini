@@ -92,6 +92,7 @@ blog.get("/bulk", async (c) => {
     }
 });
 
+//TODO: Blog should return the name of the author from the backend: check this
 blog.get("/:id", async(c) => {
     try {
         const prisma = new PrismaClient({
@@ -101,7 +102,14 @@ blog.get("/:id", async(c) => {
         const blogId = c.req.param('id');
         
         const blog = await prisma.post.findFirst({
-            where: {id: blogId}
+            where: {id: blogId},
+            include: {
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
         });
 
         if(!blog){

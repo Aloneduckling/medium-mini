@@ -11,5 +11,5 @@ export const userAtom = atom({
 
 export const globalLoadingAtom = atom({
     key: 'globalLoadingAtom',
-    default: false
+    default: true
 });

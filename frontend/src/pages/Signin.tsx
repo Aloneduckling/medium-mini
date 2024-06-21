@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useNavigate} from "react-router-dom"
-import axios from "axios"
+import axios, { isAxiosError } from "axios"
 
 import { signinInput } from '@shantanu.kau/medium'
 
@@ -45,8 +45,11 @@ const Signin = () => {
       navigate('/');
 
     } catch (error) {
-      console.log(error);
-      toast(error as string);
+      let message;
+      if(isAxiosError(error)){
+        message = error.response?.data.message ?? error;
+      }
+      toast(`Error: ${message}`);
     }
     setIsLoading(false);
     setEmail('');
@@ -54,7 +57,8 @@ const Signin = () => {
   }
 
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <>
+      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <form onSubmit={signin} className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
@@ -117,8 +121,10 @@ const Signin = () => {
           className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
-      <Toaster />
     </div>
+    <Toaster />
+    </>
+    
   )
 }
 export default Signin;  

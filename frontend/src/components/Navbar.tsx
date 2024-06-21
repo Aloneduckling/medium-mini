@@ -5,7 +5,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 import { userAtom } from "@/store/atom/globalAtoms"
 import { useRecoilValue } from "recoil";
-
 const Navbar = () => {
   const { name: username } = useRecoilValue(userAtom);
   const navigate = useNavigate();
@@ -29,7 +28,10 @@ const Navbar = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
+            <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {
+              localStorage.removeItem('token');
+              navigate('/signin');
+            }}>
               <LogOutIcon className="mr-2 h-4 w-4" />
               Logout
             </DropdownMenuItem>

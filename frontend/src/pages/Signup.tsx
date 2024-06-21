@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -52,8 +52,11 @@ const Signup = () => {
       navigate('/');
 
     } catch (error) {
-      console.log(error);
-      toast(error as string);
+      let message;
+      if(isAxiosError(error)){
+        message = error.response?.data.message ?? error;
+      }
+      toast(`Error: ${message}`);
     }
   }
 

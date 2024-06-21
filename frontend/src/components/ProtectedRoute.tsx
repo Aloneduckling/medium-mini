@@ -14,47 +14,51 @@ import globalLoader from '../assets/globalLoader.json'
 const ProtectedRoute = () => {
     const navigate = useNavigate();
 
-    const [ globalLoading, setGlobalLoading ] = useRecoilState(globalLoadingAtom);
+    const [globalLoading, setGlobalLoading] = useRecoilState(globalLoadingAtom);
     const setGlobalUserState = useSetRecoilState(userAtom);
-
 
     useEffect(() => {
         const authRequest = async () => {
             try {
+                const token = localStorage.getItem('token');
+
                 setGlobalLoading(true);
                 const res = await axios({
                     method: 'get',
-                    url: `${import.meta.env.VITE_BACKEND_BASE_URL}/user/me` ,
+                    url: `${import.meta.env.VITE_BACKEND_BASE_URL}/user/me`,
                     headers: {
-                        Authorization: `Bearer ${ JSON.parse(localStorage.getItem('token') ?? '') }`
+                        Authorization: `Bearer ${token ? JSON.parse(token) : ''}`
                     }
                 });
 
-
                 setGlobalUserState(res.data);
-
+                setGlobalLoading(false);
             } catch (error) {
-                console.log(error);
-
+                setGlobalUserState({
+                    id: '',
+                    name: ''
+                });
                 navigate('/signin');
             }
-            setGlobalLoading(false);
+            
         }
         authRequest();
     }, []);
 
     return (
         <>
-            {globalLoading? <div className="w-full h-[100vh] flex flex-col justify-center">
-            <Player
-                className="w-[300px] h-[300px]"
-                src={globalLoader}
-                autoplay
-                loop
-                speed={1}
-            />
-        </div> :<> <Navbar /> <Outlet/></> }
-        
+            {
+            globalLoading ? <div className="w-full h-[100vh] flex flex-col justify-center">
+                <Player
+                    className="w-[300px] h-[300px]"
+                    src={globalLoader}
+                    autoplay
+                    loop
+                    speed={1}
+                />
+            </div> : <> <Navbar /> <Outlet /></>
+            }
+
         </>
     )
 }

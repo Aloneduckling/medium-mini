@@ -25,6 +25,4 @@ const App = () => {
   )
 }
 
-export default App
-
-//TODO: 1. Implement Home.tsx completely
+export default App;

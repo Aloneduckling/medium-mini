@@ -5,21 +5,24 @@ import loading from '../assets/postLoading.json'
 import DisplayError from "@/components/DisplayError.tsx";
 import BlogList from "./Blog/BlogList";
 
+
 export type TBlog = {
     id: string;
     title: string;
     content: string;
     published: boolean;
     authorId: string;
+    author: {
+        name: string
+    }
 };
 
 const Home = () => {
-
     const [isLoading, data, error] = useFetch<TBlog[]>({
         method: 'get',
         url: `${import.meta.env.VITE_BACKEND_BASE_URL}/blog/bulk`,
         headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem('token') ?? '')}`
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('token') ?? '{}')}`
         }
     });
 
@@ -38,7 +41,7 @@ const Home = () => {
     if (error) {
         return <DisplayError error={error}/>
     }
-    console.log(data);
+    
     return (
         <div className="flex flex-col justify-between  mt-10 p-4">
             <h2 className="text-center font-bold text-3xl">All Blogs</h2>
