@@ -1,0 +1,16 @@
+version: '1.0'
+services:
+  frontend:
+    build: ./frontend
+    container_name: medium-frontend
+    environment:
+      - VITE_BACKEND_BASE_URL=http://localhost:8787/api/v1
+    ports:
+      - 5173:5173
+    
+  backend:
+    build: ./backend
+    container_name: medium-backend
+    ports:
+      - 8787:8787
+    
